@@ -1,3 +1,24 @@
+<?php
+session_start();
+
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
+}
+
+require_once '../koneksi.php';
+require_once 'controller.php';
+
+$obj = new controller();
+$data = $obj->View();
+
+if ($data === false) {
+    die("Error: " . $koneksi->error);
+}
+$no = 1;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,17 +121,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">001</td>
-                                    <td class="text-center">CPNS Offline</td>
-                                    <td class="text-center">12</td>
-                                    <td class="text-center">Rp. 500.000</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
-                                    </td>
-                                </tr>
+                                <?php
+                                while ($row = $data->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo $no; ?></td>
+                                        <td class="text-center"><?php echo $row['id_kelas']; ?></td>
+                                        <td class="text-center"><?php echo $row['nama_kelas']; ?></td>
+                                        <td class="text-center"><?php echo $row['kapasitas_kelas']; ?></td>
+                                        <td class="text-center"><?php echo 'Rp. ' . number_format($row['harga'], 0, ',', '.'); ?></td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
+                                        </td>
+                                    </tr>
+                                <?php $no += 1;
+                                } ?>
                             </tbody>
                         </table>
                     </div>
