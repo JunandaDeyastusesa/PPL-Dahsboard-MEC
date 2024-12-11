@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: login.php");
-    exit;
-}
-
 require_once '../koneksi.php';
 require_once 'controller.php';
 
@@ -18,7 +12,20 @@ if ($data === false) {
 }
 $no = 1;
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_kelas = $_POST['id_kelas'];
+    $nama_kelas = $_POST['nama_kelas'];
+    $kapasitas_kelas = $_POST['kapasitas_kelas'];
+    $harga = $_POST['harga'];
+    if ($obj->Add($id_kelas, $nama_kelas, $kapasitas_kelas, $harga)) {
+        echo '<meta http-equiv="refresh" content="0">';
+    } else {
+        // echo '<div> GAGAL </div>';
+        echo '<meta http-equiv="refresh" content="0">';
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -153,22 +160,22 @@ $no = 1;
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                             <div class="mb-3">
                                 <label for="id_kelas" class="form-label">ID Kelas:</label>
-                                <input type="number" class="form-control" id="id_kelas" required>
+                                <input name="id_kelas" type="number" class="form-control" id="id_kelas" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nama_kelas" class="form-label">Nama Kelas:</label>
-                                <input type="text" class="form-control" id="nama_kelas" required>
+                                <input name="nama_kelas" type="text" class="form-control" id="nama_kelas" required>
                             </div>
                             <div class="mb-3">
                                 <label for="kapasitas_kelas" class="form-label">Kapasitas Kelas:</label>
-                                <input type="number" class="form-control" id="kapasitas_kelas" required>
+                                <input name="kapasitas_kelas" type="number" class="form-control" id="kapasitas_kelas" required>
                             </div>
                             <div class="mb-3">
                                 <label for="harga" class="form-label">Harga Kelas:</label>
-                                <input type="number" class="form-control" id="harga" required>
+                                <input name="harga" type="number" class="form-control" id="harga" required>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
