@@ -1,3 +1,17 @@
+<?php
+
+require_once '../koneksi.php';
+require_once 'controller.php';
+
+$obj = new controller();
+$data = $obj->ViewSiswa();
+
+if ($data === false) {
+    die("Error: " . $koneksi->error);
+}
+$no = 1;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,7 +92,7 @@
                 <!-- Main Content -->
                 <main class="content col-md-10 ms-sm-auto col-lg-10 px-md-4">
                     <div class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
-                        <h1>Data Kelas</h1>
+                        <h1>Data Siswa</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKelasModal">
                                 Tambah
@@ -102,18 +116,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <?php
+                            while ($row = $data->fetch_assoc()) {
+                            ?>
                                 <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">001</td>
-                                    <td class="text-center">12 Juli 2023</td>
-                                    <td class="text-center">Anang Sunanto</td>
-                                    <td class="text-center">08562134646</td>
-                                    <td class="text-center">16 Mei 2005</td>
-                                    <td class="text-center">Jl. Manukan Gg. Besar Surabaya</td>
+                                    <td class="text-center"><?php echo $no; ?></td>
+                                    <td class="text-center"><?php echo $row['id_siswa']; ?></td>
+                                    <td class="text-center"><?php echo $row['tgl_daftar']; ?></td>
+                                    <td class="text-center"><?php echo $row['nama']; ?></td>
+                                    <td class="text-center"><?php echo $row['siswa_no_telp']; ?></td>
+                                    <td class="text-center"><?php echo $row['tanggal_lahir']; ?></td>
+                                    <td class="text-center"><?php echo $row['alamat']; ?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
                                         <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
                                     </td>
+                                    <?php $no += 1;
+                            } ?>
                                 </tr>
                             </tbody>
                         </table>
