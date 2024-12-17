@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="text-center"><?php echo $row['alamat']; ?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-warning me-2" onclick="showEditPopup(<?php echo $row['id_siswa']; ?>)">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_siswa']; ?>)">Hapus</button>
                                     </td>
                                     <?php $no += 1;
                             } ?>
@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 }
             };
-            xhr.open('GET', 'delete.php?id_siswa=' + id_siswa, true);
+            xhr.open('GET', 'member_delete.php?id_siswa=' + id_siswa, true);
             xhr.send();
         }
 
