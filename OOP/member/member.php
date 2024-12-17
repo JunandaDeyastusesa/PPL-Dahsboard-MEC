@@ -10,6 +10,20 @@ if ($data === false) {
     die("Error: " . $koneksi->error);
 }
 $no = 1;
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_siswa = $_POST['id_siswa'];
+    $nama = $_POST['nama'];
+    $siswa_no_telp = $_POST['siswa_no_telp'];
+    $tanggal_lahir = $_POST['tanggal_lahir'];
+    $alamat = $_POST['alamat'];
+    $tgl_daftar = $_POST['tgl_daftar'];
+    if ($obj->AddSiswa($id_siswa, $nama, $siswa_no_telp, $tanggal_lahir, $alamat, $tgl_daftar)) {
+        echo '<meta http-equiv="refresh" content="0">';
+    } else {
+        echo '<meta http-equiv="refresh" content="0">';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +142,7 @@ $no = 1;
                                     <td class="text-center"><?php echo $row['tanggal_lahir']; ?></td>
                                     <td class="text-center"><?php echo $row['alamat']; ?></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
+                                        <button class="btn btn-sm btn-outline-warning me-2" onclick="showEditPopup(<?php echo $row['id_siswa']; ?>)">Edit</button>
                                         <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
                                     </td>
                                     <?php $no += 1;
@@ -146,34 +160,34 @@ $no = 1;
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Data Kelas</h5>
+                        <h5 class="modal-title">Tambah Data Siswa</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"> 
                             <div class="mb-3">
-                                <label for="id_kelas" class="form-label">ID Kelas:</label>
-                                <input type="number" class="form-control" id="id_kelas" required>
+                                <label for="id_siswa" class="form-label">ID Siswa:</label>
+                                <input type="number" class="form-control" id="id_siswa" name="id_siswa" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tanggal_daftar" class="form-label">Tanggal Daftar:</label>
-                                <input type="date" class="form-control" id="tanggal_daftar" required>
+                                <input type="date" class="form-control" id="tanggal_daftar" name="tgl_daftar" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama:</label>
-                                <input type="text" class="form-control" id="nama" required>
+                                <input type="text" class="form-control" id="nama" name="nama" required>
                             </div>
                             <div class="mb-3">
                                 <label for="no_telepon" class="form-label">No Telepon:</label>
-                                <input type="text" class="form-control" id="no_telepon" required>
+                                <input type="number" class="form-control" id="no_telepon" name="siswa_no_telp" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
-                                <input type="date" class="form-control" id="kapasitas_kelas" required>
+                                <input type="date" class="form-control" id="kapasitas_kelas" name="tanggal_lahir" required>
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat:</label>
-                                <input type="text" class="form-control" id="alamat" required>
+                                <input type="text" class="form-control" id="alamat" name="alamat" required>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
@@ -185,64 +199,80 @@ $no = 1;
         </div>
 
         <!-- Edit Kelas Modal -->
-        <div class="modal fade" id="editKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Data Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="id_siswa" class="form-label">ID Siswa:</label>
-                                <input type="number" class="form-control" id="id_siswa" placeholder="id siswa" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal_daftar" class="form-label">Tanggal Daftar:</label>
-                                <input type="date" class="form-control" id="tanggal_daftar" placeholder="tanggal daftar" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama" class="form-label">Nama:</label>
-                                <input type="text" class="form-control" id="nama" placeholder="nama" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="no_telepon" class="form-label">No Telepon:</label>
-                                <input type="number" class="form-control" id="no_telepon" placeholder="08655556646" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
-                                <input type="date" class="form-control" id="tanggal_lahir" placeholder="tanggal lahir" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="alamat" class="form-label">Alamat:</label>
-                                <input type="text" class="form-control" id="alamat" placeholder="alamat" required>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
-                            </div>
-                        </form>
+        <div class="myPopupEdit" id="EditSiswa">
+                <div class="Edit" id="popup">
+                    <div class="popup-content">
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Delete Kelas Modal -->
-        <div class="modal fade" id="deleteKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Yakin Mau Hapus?</p>
-                        <button class="btn btn-danger">Hapus</button>
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <div class="myPopupDel" id="DelSiswa">
+                <div class="Del" id="popup">
+                    <div class="popup-content-del">
                     </div>
                 </div>
             </div>
-        </div>
+
+        <script>
+        function togglePopup() {
+            var popup = document.getElementById("myPopup");
+            var overlay = document.getElementById("overlay");
+            if (popup.style.display === "block") {
+                popup.style.display = "none";
+                overlay.style.display = "none";
+            } else {
+                popup.style.display = "block";
+                overlay.style.display = "block";
+            }
+        }
+
+        function showEditPopup(id_siswa) {
+            var popupContent = document.querySelector('.popup-content');
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        popupContent.innerHTML = xhr.responseText;
+                        document.getElementById('editPopup').style.display = 'block';
+                    } else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.open('GET', 'member_edit.php?id_siswa=' + id_siswa, true);
+            xhr.send();
+        }
+
+        function showDelPopup(id_siswa) {
+            var popupContentDel = document.querySelector('.popup-content-del');
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        popupContentDel.innerHTML = xhr.responseText;
+                        document.getElementById('editPopup').style.display = 'block';
+                    } else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.open('GET', 'delete.php?id_siswa=' + id_siswa, true);
+            xhr.send();
+        }
+
+        //KONFIRMASI LOGOUT
+        const logoutButton = document.querySelector('.log-out-btn');
+
+        logoutButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const confirmation = confirm('Apakah Anda yakin untuk keluar?');
+            if (confirmation) {
+                window.location.href = '../logout.php';
+            }
+        });
+    </script>
 
         <!-- Bootstrap 5 JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
