@@ -1,3 +1,22 @@
+<?php
+
+require_once '../koneksi.php';
+require_once 'controller.php';
+
+$obj = new controller();
+$data = $obj->ViewRelasiBayar();
+
+$_ViewKelas = $obj->ViewKelas();
+$_ViewSiswa = $obj->ViewSiswa();
+
+if ($data === false) {
+    die("Error: " . $koneksi->error);
+}
+$no = 1;
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +34,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Data Kelas</title>
+        <title>Data Pembayaran</title>
         <!-- Bootstrap 5 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../../assets/style.css">
@@ -28,7 +47,8 @@
                 <nav class="col-md-2 col-lg-2 d-md-block sidebar">
                     <div class="sidebar-menu position-sticky pt-3">
                         <div class="text-center mb-4">
-                            <img src="../../assets/ikon/Logo-MEC.png" alt="Logo" class="img-fluid" style="max-width: 120px; padding-top: 30px">
+                            <img src="../../assets/ikon/Logo-MEC.png" alt="Logo" class="img-fluid"
+                                style="max-width: 120px; padding-top: 30px">
                         </div>
                         <ul class="nav flex-column">
                             <li class="nav-item">
@@ -77,10 +97,12 @@
 
                 <!-- Main Content -->
                 <main class="content col-md-10 ms-sm-auto col-lg-10 px-md-4">
-                    <div class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
+                    <div
+                        class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
                         <h1>Data Pembayaran</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKelasModal">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#tambahKelasModal">
                                 Tambah
                             </button>
                         </div>
@@ -102,18 +124,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                             while ($row = $data->fetch_assoc()) {
+                            ?>
                                 <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">001</td>
-                                    <td class="text-center">12 Jan 2023</td>
-                                    <td class="">Jhon Doe</td>
-                                    <td class="">CPNS Offline</td>
-                                    <td class="">082132781254</td>
-                                    <td class="">Rp. 500.000</td>
+                                    <td class="text-center"><?php echo $no; ?></td>
+                                    <td class="text-center"><?php echo $row['id_bayar']; ?></td>
+                                    <td class="text-center"><?php echo $row['tanggal']; ?></td>
+                                    <td class=""><?php echo $row['nama']; ?></td>
+                                    <td class=""><?php echo $row['nama_kelas']; ?></td>
+                                    <td class=""><?php echo $row['siswa_no_telp']; ?></td>
+                                    <td class=""><?php echo 'Rp. ' . number_format($row['harga'], 0, ',', '.'); ?></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
+
+                                        <button class="btn btn-sm btn-outline-warning me-2"
+                                            onclick="showEditPopup(<?php echo $row['id_bayar']; ?>)">Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger"
+                                            onclick="showDelPopup(<?php echo $row['id_bayar']; ?>)">Hapus</button>
                                     </td>
+                                    <?php $no += 1;
+                                } ?>
                                 </tr>
                             </tbody>
                         </table>
@@ -131,31 +161,39 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
-                        <form>
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                             <div class="mb-3">
                                 <label for="id_bayar" class="form-label">ID Bayar:</label>
-                                <input type="number" class="form-control" id="id_bayar" required>
+                                <input type="number" class="form-control" id="id_bayar" name="id_bayar" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tanggal" class="form-label">Tanggal:</label>
-                                <input type="date" class="form-control" id="tanggal" required>
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nama_siswa" class="form-label">Siswa:</label>
-                                <select class="form-select" id="inputGroupSelect01">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select name="id_siswa" class="form-select" id="inputGroupSelect01">
+                                    <option value="">-- Pilih Siswa --</option>
+                                    <?php
+                                    if ($_ViewSiswa) {
+                                        while ($data_siswa = mysqli_fetch_array($_ViewSiswa)) {
+                                            echo '<option value="' . $data_siswa['id_siswa'] . '">' . $data_siswa['nama'] . '</option>';
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="nama_kelas" class="form-label">Kelas:</label>
-                                <select class="form-select" id="inputGroupSelect01">
+                                <select name="id_kelas" class="form-select" id="inputGroupSelect01">
                                     <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <?php
+                                        if ($_ViewKelas) {
+                                            while ($data_kelas = mysqli_fetch_array($_ViewKelas)) {
+                                                echo '<option value="' . $data_kelas['id_kelas'] . '">' . $data_kelas['nama_kelas'] . '</option>';
+                                            }
+                                        }
+                                    ?>
                                 </select>
                             </div>
                             <div class="d-flex justify-content-end">
@@ -168,66 +206,6 @@
         </div>
 
         <!-- Edit Kelas Modal -->
-        <div class="modal fade" id="editKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Data Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="id_bayar" class="form-label">ID Bayar:</label>
-                                <input type="number" class="form-control" id="id_bayar" placeholder="0221" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal:</label>
-                                <input type="date" class="form-control" id="tanggal" placeholder="12 Jan 2023" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_siswa" class="form-label">Siswa:</label>
-                                <select class="form-select" id="inputGroupSelect01">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_kelas" class="form-label">Kelas:</label>
-                                <select class="form-select" id="inputGroupSelect01">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete Kelas Modal -->
-        <div class="modal fade" id="deleteKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus kelas ini?</p>
-                        <button class="btn btn-danger">Hapus</button>
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Bootstrap 5 JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
