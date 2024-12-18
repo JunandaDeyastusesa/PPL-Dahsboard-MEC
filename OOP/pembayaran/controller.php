@@ -41,7 +41,6 @@ class Controller extends koneksi
         }
         return $perintah;
     }
-
     public function ViewRelasiBayar()
     {
         $_ViewRelasi = "SELECT * FROM table_pembayaran 
@@ -54,3 +53,60 @@ class Controller extends koneksi
         return $perintah;
     }
 }
+    public function ViewById($data)
+    {
+        $_ViewById = "SELECT * FROM table_pembayaran WHERE id_bayar=?";
+        if ($statement = $this->prepare($_ViewById)) {
+            $statement->bind_param("i", $id_bayar);
+            $id_bayar = $data;
+            if ($statement->execute()) {
+                $statement->store_result();
+                $statement->bind_result($this->id_bayar, $this->tanggal, $this->id_siswa, $this->id_kelas);
+                $statement->fetch();
+                if ($statement->num_rows == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        $statement->close();
+    }
+
+
+    public function AddBayar($id_bayar, $tanggal, $id_siswa, $id_kelas)
+    {
+        $check_query = "SELECT id_bayar FROM table_pembayaran WHERE id_bayar = ?";
+        $check_statement = $this->prepare($check_query);
+        $check_statement->bind_param("s", $id_bayar);
+        $check_statement->execute();
+        $check_statement->store_result();
+        
+        if ($check_statement->num_rows > 0) {
+            echo "<script> alert('Maaf, Id Sudah ada'); </script>";
+            return false;
+        } else {
+            $_AddBayar = "INSERT INTO table_pembayaran (id_bayar, tanggal, id_siswa, id_kelas) VALUES (?, ?, ?, ?)";
+
+            if ($_statement = $this->prepare($_AddBayar)) {
+                $_statement->bind_param("ssss", $param_id_bayar, $param_tanggal, $param_id_siswa, $param_id_kelas);
+
+                $param_id_bayar = $id_bayar;
+                $param_tanggal = $tanggal;
+                $param_id_siswa = $id_siswa;
+                $param_id_kelas = $id_kelas;
+
+                if ($_statement->execute()) {
+                    $_statement->close();
+                    return true;
+                } else {
+                    $_statement->close();
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    

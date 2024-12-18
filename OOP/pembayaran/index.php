@@ -14,7 +14,19 @@ if ($data === false) {
 }
 $no = 1;
 
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_bayar = $_POST['id_bayar'];
+    $tanggal = $_POST['tanggal'];
+    $id_siswa = $_POST['id_siswa'];
+    $id_kelas = $_POST['id_kelas'];
+    if ($obj->AddBayar($id_bayar, $tanggal, $id_siswa, $id_kelas)) {
+        // echo '<div> SUKSES </div>';
+        echo '<meta http-equiv="refresh" content="0">';
+    } else {
+        // echo '<div> GAGAL </div>';
+        echo '<meta http-equiv="refresh" content="0">';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -206,6 +218,92 @@ $no = 1;
         </div>
 
         <!-- Edit Kelas Modal -->
+        <div class="myPopupEdit" id="EditSiswa">
+            <div class="Edit" id="popup">
+                <div class="popup-content">
+                </div>
+            </div>
+        </div>
+
+        <div class="myPopupDel" id="DelSiswa">
+            <div class="Del" id="popup">
+                <div class="popup-content-del">
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function togglePopup() {
+            var popup = document.getElementById("myPopup");
+            var overlay = document.getElementById("overlay");
+            if (popup.style.display === "block") {
+                popup.style.display = "none";
+                overlay.style.display = "none";
+            } else {
+                popup.style.display = "block";
+                overlay.style.display = "block";
+            }
+        }
+
+        function showEditPopup(id_bayar) {
+            // Mendapatkan elemen div yang digunakan untuk menampilkan konten popup
+            var popupContent = document.querySelector('.popup-content');
+
+            // Buat XMLHttpRequest untuk memuat konten dari member_edit.php
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Isi konten dari member_edit.php ke dalam popup
+                        popupContent.innerHTML = xhr.responseText;
+                        // Tampilkan popup
+                        document.getElementById('editPopup').style.display = 'block';
+                    } else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+
+            // Kirim permintaan untuk member_edit.php dengan id_bayar yang dipilih
+            xhr.open('GET', 'edit.php?id_bayar=' + id_bayar, true);
+            xhr.send();
+        }
+
+        function showDelPopup(id_bayar) {
+            // Mendapatkan elemen div yang digunakan untuk menampilkan konten popup
+            var popupContentDel = document.querySelector('.popup-content-del');
+
+            // Buat XMLHttpRequest untuk memuat konten dari member_edit.php
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Isi konten dari member_edit.php ke dalam popup
+                        popupContentDel.innerHTML = xhr.responseText;
+                        // Tampilkan popup
+                        document.getElementById('editPopup').style.display = 'block';
+                    } else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+
+            // Kirim permintaan untuk member_edit.php dengan id_bayar yang dipilih
+            xhr.open('GET', 'delete.php?id_bayar=' + id_bayar, true);
+            xhr.send();
+        }
+
+        //KONFIRMASI LOGOUT
+        const logoutButton = document.querySelector('.log-out-btn');
+
+        logoutButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const confirmation = confirm('Apakah Anda yakin untuk keluar?');
+            if (confirmation) {
+                window.location.href = '../logout.php';
+            }
+        });
+        </script>
 
         <!-- Bootstrap 5 JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
