@@ -6,6 +6,11 @@ require_once 'controller.php';
 $obj = new controller();
 $data = $obj->View();
 
+
+// if (!$obj->ViewById($_GET['id_mentor'])) {
+//     die("Error : id_mentor tidak ditemukan");
+// }
+
 if ($data === false) {
     die("Error: " . $koneksi->error);
 }
@@ -62,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-l ink" href="../member/member.php">
+                                <a class="nav-link" href="../member/member.php">
                                     <img src="../../assets/ikon/Siswa.svg" alt="">Siswa
                                 </a>
                             </li>
@@ -98,27 +103,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- Main Content -->
                 <main class="content col-md-10 ms-sm-auto col-lg-10 px-md-4">
                     <div class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
-                        <h1>Data Kelas</h1>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKelasModal">
-                                Tambah
-                            </button>
-                        </div>
+                        <h1>Data Mentor</h1>
+                        
                     </div>
+                    <div class="popup" id="myPopup">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                        <h2>Silahkan Tambahkan Data</h2>
+                        <label for="id_mentor">ID Mentor:</label>
+                        <input type="number" id="id_mentor" name="id_mentor" required><br><br>
 
+                        <label for="nama_mentor">Nama Mentor:</label>
+                        <input type="text" id="nama_mentor" name="nama_mentor" required><br><br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required><br><br>
+
+                        <label for="telp">Telp:</label>
+                        <input type="number" id="telp" name="telp" required><br><br>
+
+                        <label for="tgl_lahir">Tanggal Lahir:</label>
+                        <input type="date" id="tgl_lahir" name="tgl_lahir" required><br><br>
+
+                        <label for="alamat">Alamat:</label>
+                        <textarea id="alamat" name="alamat" rows="4" cols="30" required></textarea><br><br>
+
+                        <input class="btn-add-submit" type="submit" value="Submit">
+                        <button onclick="togglePopup()">Tutup Popup</button>
+                    </form>
+                </div>
+                <div class="overlay" id="overlay"></div>
                     <!-- Table -->
+                    <!-- <div class="btn-toolbar mb-2 mb-md-0">
+                            <a class="btn-add btn btn-primary" onclick="togglePopup()">Tambah</a>                    
+                    </div> -->
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                            
-                                <tr>
-                                    <th class="py-2">No</th>
-                                    <th class="py-2">ID Kelas</th>
-                                    <th class="py-2">Nama Kelas</th>
-                                    <th class="py-2">Kapasitas Kelas</th>
-                                    <th class="py-2">Harga</th>
-                                    <th class="py-2">Aksi</th>
-                                </tr>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <a class="btn-add btn btn-primary" onclick="togglePopup()">Tambah</a>                    
+                            </div>
+                            <tr class="text-center">
+                                <th class="py-2">No</th>
+                                <th class="py-2">ID Mentor</th>
+                                <th class="py-2">Nama Mentor</th>
+                                <th class="py-2">Email</th>
+                                <th class="py-2">No Telp</th>
+                                <th class="py-2">Tanggal Lahir</th>
+                                <th class="py-2">Alamat</th>
+                                <th class="py-2">Aksi</th>
+                            </tr>
                             </thead>
                             <tbody>
                             <?php
@@ -126,110 +159,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             ?>
                                 <tr>
                                     <td class="text-center"><?php echo $no ?></td>
+                                    <td class="text-center"><?php echo $row['id_mentor']; ?></td>
                                     <td class="text-center"><?php echo $row['nama_mentor']; ?></td>
                                     <td class="text-center"><?php echo $row['email']; ?></td>
                                     <td class="text-center"><?php echo $row['telp']; ?></td>
                                     <td class="text-center"><?php echo $row['tgl_lahir']; ?></td>
                                     <td class="text-center"><?php echo $row['alamat']; ?></td>
-
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#editKelasModal">Edit</button>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteKelasModal">Hapus</button>
+                                    <td class="btn-aksi td-no text-center">
+                                        <a class="btn-edit" onclick="showEditPopup(<?php echo $row['id_mentor']; ?>)">Edit</a>
+                                        <a class="btn-hapus" onclick="showDelPopup(<?php echo $row['id_mentor']; ?>)">Del</a>
                                     </td>
+                                    
                                 </tr>
                                 <?php $no += 1;
                         } ?>
                             </tbody>
                         </table>
                     </div>
+                    <div class="myPopupEdit" id="EditSiswa">
+                <div class="Edit" id="popup">
+                    <div class="popup-content">
+                    </div>
+                </div>
+            </div>
+
+            <div class="myPopupDel" id="DelSiswa">
+                <div class="Del" id="popup">
+                    <div class="popup-content-del">
+                    </div>
+                </div>
+            </div>
                 </main>
-            </div>
-        </div>
-
-        <!-- Tambah Kelas Modal -->
-        <div class="modal fade modal-add" id="tambahKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Tambah Data Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="id_kelas" class="form-label">ID Kelas:</label>
-                                <input type="number" class="form-control" id="id_kelas" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_kelas" class="form-label">Nama Kelas:</label>
-                                <input type="text" class="form-control" id="nama_kelas" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="kapasitas_kelas" class="form-label">Kapasitas Kelas:</label>
-                                <input type="number" class="form-control" id="kapasitas_kelas" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="harga" class="form-label">Harga Kelas:</label>
-                                <input type="number" class="form-control" id="harga" required>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Edit Kelas Modal -->
-        <div class="modal fade" id="editKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Data Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="id_kelas" class="form-label">ID Kelas:</label>
-                                <input type="number" class="form-control" id="id_kelas" placeholder="001" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_kelas" class="form-label">Nama Kelas:</label>
-                                <input type="text" class="form-control" id="nama_kelas" placeholder="Nama Lengkap" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="kapasitas_kelas" class="form-label">Kapasitas Kelas:</label>
-                                <input type="number" class="form-control" id="kapasitas_kelas" placeholder="12" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="harga" class="form-label">Harga Kelas:</label>
-                                <input type="number" class="form-control" id="harga" placeholder="Rp. 500.000" required>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete Kelas Modal -->
-        <div class="modal fade" id="deleteKelasModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Kelas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus kelas ini?</p>
-                        <button class="btn btn-danger">Hapus</button>
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                </div>
             </div>
         </div>
 
