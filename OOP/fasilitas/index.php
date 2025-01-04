@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td><?php echo $row['status_fasilitas']; ?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_fasilitas']; ?>)">Hapus</button>
-                                        <a class="btn btn-sm btn-outline-primary btn-edit" onclick="showEditPopup(<?php echo $row['id_fasilitas']; ?>)">Edit</a>
+                                        <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_fasilitas']; ?>)">Edit</a>
                                     </td>
                                 </tr>
                             <?php $no += 1;

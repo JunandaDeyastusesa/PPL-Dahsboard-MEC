@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_jadwal']; ?>)">Hapus</button>
-                                        <a class="btn btn-sm btn-outline-primary btn-edit" onclick="showEditPopup(<?php echo $row['id_jadwal']; ?>)">Edit</a>
+                                        <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_jadwal']; ?>)">Edit</a>
                                     </td>
                                 </tr>
                             <?php $no += 1;
