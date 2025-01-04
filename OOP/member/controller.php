@@ -1,6 +1,6 @@
 <?php
 
-// include_once '../koneksi.php';
+include_once '../koneksi.php';
 
 class Controller extends koneksi
 {
