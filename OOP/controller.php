@@ -157,7 +157,34 @@ class Controller extends koneksi
         $_jumlahMentor = $perintah->num_rows;
         return $_jumlahMentor;
     }
+    public function SummaryAttendanceByDate()
+    {
+        // Query untuk menjumlahkan status hadir dan tidak hadir berdasarkan tanggal
+        $query = "
+            SELECT 
+                tanggal,
+                SUM(CASE WHEN status = 'hadir' THEN 1 ELSE 0 END) AS jumlah_hadir,
+                SUM(CASE WHEN status = 'tidak hadir' THEN 1 ELSE 0 END) AS jumlah_tidak_hadir
+            FROM absensi
+            GROUP BY tanggal
+            ORDER BY tanggal ASC
+        ";
 
+        // Eksekusi query
+        $result = $this->query($query);
+        if (!$result) {
+            die("Error: " . $this->koneksi->error);
+        }
+
+        // Return hasilnya
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+    
     public function ViewById($data)
     {
         $_ViewById = "SELECT * FROM table_jadwal WHERE id_jadwal=?";
