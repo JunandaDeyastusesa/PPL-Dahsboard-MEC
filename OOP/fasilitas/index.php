@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once '../koneksi.php';
 require_once 'controller.php';
@@ -13,19 +12,17 @@ if ($data === false) {
 $no = 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_kelas = $_POST['id_kelas'];
-    $nama_kelas = $_POST['nama_kelas'];
-    $kapasitas_kelas = $_POST['kapasitas_kelas'];
-    $harga = $_POST['harga'];
-
-    if ($obj->Add($id_kelas, $nama_kelas, $kapasitas_kelas, $harga)) {
+    $id_fasilitas = $_POST['id_fasilitas'];
+    $nama_fasilitas = $_POST['nama_fasilitas'];
+    $jumlah = $_POST['jumlah'];
+    $status_fasilitas = $_POST['status_fasilitas'];
+    if ($obj->Add($id_fasilitas, $nama_fasilitas, $jumlah, $status_fasilitas)) {
         echo '<meta http-equiv="refresh" content="0">';
     } else {
         // echo '<div> GAGAL </div>';
         echo '<meta http-equiv="refresh" content="0">';
     }
 }
-
 ?>
 
 
@@ -67,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="../peket_kelas/index.php">
+                            <a class="nav-link" href="../peket_kelas/index.php">
                                 <img src="../../assets/ikon/active-pkt-kls.svg" alt="">Paket Kelas
                             </a>
                         </li>
@@ -82,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../fasilitas/index.php">
+                            <a class="nav-link active" href="../fasilitas/index.php">
                                 <img src="../../assets/ikon/fasilitas.svg" alt="">Fasilitas
                             </a>
                         </li>
@@ -112,10 +109,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <thead class="table-secondary">
                             <tr>
                                 <th class="py-2 text-center">No</th>
-                                <th class="py-2 text-center">ID Kelas</th>
-                                <th class="py-2">Nama Kelas</th>
-                                <th class="py-2 text-center">Kapasitas Kelas</th>
-                                <th class="py-2">Harga</th>
+                                <th class="py-2 text-center">ID Fasilitas</th>
+                                <th class="py-2">Nama Fasilitas</th>
+                                <th class="py-2 text-center">Jumlah</th>
+                                <th class="py-2">Status</th>
                                 <th class="py-2 text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -125,14 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             ?>
                                 <tr>
                                     <td class="text-center"><?php echo $no; ?></td>
-                                    <td class="text-center"><?php echo $row['id_kelas']; ?></td>
-                                    <td><?php echo $row['nama_kelas']; ?></td>
-                                    <td class="text-center"><?php echo $row['kapasitas_kelas']; ?></td>
-                                    <td><?php echo 'Rp. ' . number_format($row['harga'], 0, ',', '.'); ?></td>
+                                    <td class="text-center"><?php echo $row['id_fasilitas']; ?></td>
+                                    <td><?php echo $row['nama_fasilitas']; ?></td>
+                                    <td class="text-center"><?php echo $row['jumlah']; ?></td>
+                                    <td><?php echo $row['status_fasilitas']; ?></td>
                                     <td class="text-center">
-                                        <!-- <button class="btn btn-sm btn-outline-warning me-2" onclick="showEditPopup(<?php echo $row['id_kelas']; ?>)">Edit</button> -->
-                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_kelas']; ?>)">Hapus</button>
-                                        <a class="btn btn-sm btn-outline-primary btn-edit" onclick="showEditPopup(<?php echo $row['id_kelas']; ?>)">Edit</a>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_fasilitas']; ?>)">Hapus</button>
+                                        <a class="btn btn-sm btn-outline-primary btn-edit" onclick="showEditPopup(<?php echo $row['id_fasilitas']; ?>)">Edit</a>
                                     </td>
                                 </tr>
                             <?php $no += 1;
@@ -169,25 +165,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="modal-body">
                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                         <div class="mb-3">
-                            <label for="id_kelas" class="form-label">ID Kelas:</label>
-                            <input name="id_kelas" type="number" class="form-control" id="id_kelas" required>
+                            <label for="id_fasilitas" class="form-label">ID Fasilitas:</label>
+                            <input type="number" name="id_fasilitas" class="form-control" id="id_fasilitas" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="nama_kelas" class="form-label">Nama Kelas:</label>
-                            <input name="nama_kelas" type="text" class="form-control" id="nama_kelas" required>
+                            <label for="nama_fasilitas" class="form-label">Nama Fasilitas:</label>
+                            <input type="text" name="nama_fasilitas" class="form-control" id="nama_fasilitas" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="kapasitas_kelas" class="form-label">Kapasitas Kelas:</label>
-                            <input name="kapasitas_kelas" type="number" class="form-control" id="kapasitas_kelas" required>
+                            <label for="jumlah" class="form-label">Jumlah:</label>
+                            <input type="number" name="jumlah" class="form-control" id="jumlah" required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="harga" class="form-label">Harga Kelas:</label>
-                            <input name="harga" type="number" class="form-control" id="harga" required>
+                            <label for="status_fasilitas" class="form-label">Status Fasilitas:</label>
+                            <select name="status_fasilitas" class="form-select" id="status_fasilitas" required>
+                                <option value="" disabled selected>-- Pilih Status --</option>
+                                <option value="Lengkap">Lengkap</option>
+                                <option value="Tidak Lengkap">Tidak Lengkap</option>
+                            </select>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary px-4 mt-3">Kirim</button>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary px-4">Submit</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -209,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        function showEditPopup(id_kelas) {
+        function showEditPopup(id_fasilitas) {
             // Mendapatkan elemen div yang digunakan untuk menampilkan konten popup
             var popupContent = document.querySelector('.popup-content');
 
@@ -228,12 +233,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             };
 
-            // Kirim permintaan untuk member_edit.php dengan id_kelas yang dipilih
-            xhr.open('GET', 'edit.php?id_kelas=' + id_kelas, true);
+            // Kirim permintaan untuk member_edit.php dengan id_fasilitas yang dipilih
+            xhr.open('GET', 'edit.php?id_fasilitas=' + id_fasilitas, true);
             xhr.send();
         }
 
-        function showDelPopup(id_kelas) {
+        function showDelPopup(id_fasilitas) {
             // Mendapatkan elemen div yang digunakan untuk menampilkan konten popup
             var popupContentDel = document.querySelector('.popup-content-del');
 
@@ -252,8 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             };
 
-            // Kirim permintaan untuk member_edit.php dengan id_kelas yang dipilih
-            xhr.open('GET', 'delete.php?id_kelas=' + id_kelas, true);
+            // Kirim permintaan untuk member_edit.php dengan id_fasilitas yang dipilih
+            xhr.open('GET', 'delete.php?id_fasilitas=' + id_fasilitas, true);
             xhr.send();
         }
 

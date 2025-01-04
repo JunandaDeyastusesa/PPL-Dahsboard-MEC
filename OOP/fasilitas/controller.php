@@ -24,8 +24,8 @@ class Controller extends koneksi
 
     public function View()
     {
-        $member = 'SELECT * FROM table_paket_kls';
-        $perintah = $this->query($member);
+        $fasilitas = 'SELECT * FROM table_fasilitas';
+        $perintah = $this->query($fasilitas);
         if (!$perintah) {
             die("Error : " . $this->koneksi->error);
         }
@@ -34,13 +34,13 @@ class Controller extends koneksi
 
     public function ViewById($data)
     {
-        $_ViewById = "SELECT * FROM table_paket_kls WHERE id_kelas =?";
+        $_ViewById = "SELECT * FROM table_fasilitas WHERE id_fasilitas=?";
         if ($statement = $this->prepare($_ViewById)) {
-            $statement->bind_param("i", $id_kelas);
-            $id_kelas  = $data;
+            $statement->bind_param("i", $id_fasilitas);
+            $id_fasilitas = $data;
             if ($statement->execute()) {
                 $statement->store_result();
-                $statement->bind_result($this->id_kelas, $this->nama_kelas, $this->kapasitas_kelas, $this->harga);
+                $statement->bind_result($this->id_fasilitas, $this->nama_fasilitas, $this->jumlah, $this->status_fasilitas);
                 $statement->fetch();
                 if ($statement->num_rows == 1) {
                     return true;
@@ -52,11 +52,11 @@ class Controller extends koneksi
         $statement->close();
     }
 
-    public function Add($id_kelas, $nama_kelas, $kapasitas_kelas, $harga)
+    public function Add($id_fasilitas, $nama_fasilitas, $jumlah, $status_fasilitas)
     {
-        $check_query = "SELECT id_kelas  FROM table_paket_kls WHERE id_kelas  = ?";
+        $check_query = "SELECT id_fasilitas FROM table_fasilitas WHERE id_fasilitas = ?";
         $check_statement = $this->prepare($check_query);
-        $check_statement->bind_param("s", $id_kelas);
+        $check_statement->bind_param("s", $id_fasilitas);
         $check_statement->execute();
         $check_statement->store_result();
 
@@ -64,16 +64,16 @@ class Controller extends koneksi
             echo "<script> alert('Maaf, Id Sudah ada'); </script>";
             return false;
         } else {
-            // If id_kelas  doesn't exist, proceed with insertion
-            $_Add = "INSERT INTO table_paket_kls (id_kelas , nama_kelas, kapasitas_kelas, harga) VALUES (?, ?, ?, ?)";
+            // If id_fasilitas doesn't exist, proceed with insertion
+            $_Add = "INSERT INTO table_fasilitas (id_fasilitas, nama_fasilitas, jumlah, status_fasilitas) VALUES (?, ?, ?, ?)";
 
             if ($_statement = $this->prepare($_Add)) {
-                $_statement->bind_param("ssss", $param_id_kelas, $param_nama_kelas, $param_kapasitas_kelas, $param_harga);
+                $_statement->bind_param("ssss", $param_id_fasilitas, $param_nama_fasilitas, $param_jumlah, $param_status_fasilitas);
 
-                $param_id_kelas  = $id_kelas;
-                $param_nama_kelas = $nama_kelas;
-                $param_kapasitas_kelas = $kapasitas_kelas;
-                $param_harga = $harga;
+                $param_id_fasilitas = $id_fasilitas;
+                $param_nama_fasilitas = $nama_fasilitas;
+                $param_jumlah = $jumlah;
+                $param_status_fasilitas = $status_fasilitas;
 
                 if ($_statement->execute()) {
                     echo "<script> alert('Data berhasil ditambahkan!'); </script>";
@@ -90,15 +90,15 @@ class Controller extends koneksi
     }
 
 
-    public function Edit($id_kelas, $nama_kelas, $kapasitas_kelas, $harga)
+    public function Edit($id_fasilitas, $nama_fasilitas, $jumlah, $status_fasilitas)
     {
-        $_Edit = "UPDATE table_paket_kls SET nama_kelas=?, kapasitas_kelas=?, harga=? WHERE id_kelas =?";
+        $_Edit = "UPDATE table_fasilitas SET nama_fasilitas=?, jumlah=?, status_fasilitas=? WHERE id_fasilitas=?";
         if ($_statement = $this->prepare($_Edit)) {
-            $_statement->bind_param("sssi", $param_nama_kelas, $param_kapasitas_kelas, $param_harga, $param_id_kelas);
-            $param_id_kelas  = $id_kelas;
-            $param_nama_kelas = $nama_kelas;
-            $param_kapasitas_kelas = $kapasitas_kelas;
-            $param_harga = $harga;
+            $_statement->bind_param("sssi", $param_nama_fasilitas, $param_jumlah, $param_status_fasilitas, $param_id_fasilitas);
+            $param_id_fasilitas = $id_fasilitas;
+            $param_nama_fasilitas = $nama_fasilitas;
+            $param_jumlah = $jumlah;
+            $param_status_fasilitas = $status_fasilitas;
             if ($_statement->execute()) {
                 echo "<script> alert('Data berhasil diubah!'); window.location='index.php'; </script>";
                 // $_statement->close();
@@ -110,12 +110,12 @@ class Controller extends koneksi
         $_statement->close();
     }
 
-    public function DeleteById($id_kelas)
+    public function DeleteById($id_fasilitas)
     {
-        $_DeleteByid_kelas  = "DELETE FROM table_paket_kls WHERE id_kelas =?";
-        if ($_statement = $this->prepare($_DeleteByid_kelas)) {
-            $_statement->bind_param("i", $param_id_kelas);
-            $param_id_kelas  = $id_kelas;
+        $_DeleteByid_fasilitas = "DELETE FROM table_fasilitas WHERE id_fasilitas=?";
+        if ($_statement = $this->prepare($_DeleteByid_fasilitas)) {
+            $_statement->bind_param("i", $param_id_fasilitas);
+            $param_id_fasilitas = $id_fasilitas;
             if ($_statement->execute()) {
                 echo "<script> alert('Data Telah Dihapus!'); window.location='index.php'; </script>";
                 $_statement->close();

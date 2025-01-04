@@ -20,6 +20,17 @@
     border-color: #5a1592 !important;
 }
 
+.btn-outline-primary {
+    color: #410075 !important;
+    border-color: #410075 !important;
+}
+
+.btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #5a1592 !important;
+    border-color: #5a1592 !important;
+}
+
 .container {
     display: flex;
 }
@@ -164,13 +175,13 @@ td.td-no {
     padding-bottom: 0;
 }
 
-td {
+/* td {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
     font-size: 14px;
     /* text-align: center; */
-}
+} */
 
 th {
     text-align: center;
@@ -208,21 +219,10 @@ table .btn-aksi button {
     margin-right: 10px;
 }
 
-.btn-edit {
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 3px 10px;
-    border-radius: 5px;
-    border: 0.7px solid #FFB800;
-    margin-right: 10px;
-    text-decoration: none;
-    color: #FFB800;
-}
 
 /* MEMBER_EDIT.PHP */
 .EditSiswa {
-    width: 450px;
+    width: 600px;
     padding: 20px;
     border-radius: 8px;
     position: fixed;
@@ -265,42 +265,6 @@ table .btn-aksi button {
     border-radius: 10px;
     width: 100%;
     box-sizing: border-box;
-}
-
-
-.PopUpEdit input[type="submit"] {
-    /* padding: 10px 20px; */
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    /* width: 100%; */
-    background-color: #360050;
-    padding: 10px 30px;
-    color: white;
-    box-sizing: border-box;
-}
-
-.PopUpEdit input[type="submit"]:hover {
-    background-color: #410075;
-    color: white;
-    box-sizing: border-box;
-}
-
-.btn-back-edit {
-    float: right;
-    font-size: 14px;
-    padding: 6px 25px;
-    border-radius: 10px;
-    border: 1px solid #787878;
-    text-decoration: none;
-    color: #787878;
-}
-
-.btn-back-edit:hover {
-    background-color: #787878;
-    color: white;
 }
 
 .PopUpEdit textarea {
@@ -382,11 +346,11 @@ table .btn-aksi button {
 
 .Delete .hapus-2 {
     float: right;
-    font-weight: 700;
+    font-weight: 500;
     background-color: transparent;
     color: #fdc73d;
     border: 1px solid #fdc73d;
-    padding: 8px 14px;
+    padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
 }
@@ -401,10 +365,10 @@ table .btn-aksi button {
     background-color: #570080;
 }
 
-.btn-edit:hover {
+/* .btn-edit:hover {
     background-color: #ffd66d;
     color: #fff;
-}
+} */
 
 .btn-hapus:hover {
     background-color: #ff0000;
@@ -631,7 +595,7 @@ table .btn-aksi button {
 .dashboard .col-right-bottom .jadwal-p {
     color: white;
     font-size: 18px;
-    padding: 12.5px 12.5px 12.5px 20px;
+    /* padding: 12.5px 12.5px 12.5px 20px; */
 }
 
 .dashboard .col-hari-jadwal {
