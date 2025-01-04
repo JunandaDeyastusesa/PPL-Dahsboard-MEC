@@ -104,7 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <main class="content col-md-10 ms-sm-auto col-lg-10 px-md-4">
                     <div class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
                         <h1>Data Mentor</h1>
-                        
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                        <a class="btn-add btn btn-primary" onclick="togglePopup()">Tambah</a>                    
+                    </div>
                     </div>
                     <div class="popup" id="myPopup">
                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
@@ -132,16 +134,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </form>
                 </div>
                 <div class="overlay" id="overlay"></div>
-                    <!-- Table -->
-                    <!-- <div class="btn-toolbar mb-2 mb-md-0">
-                            <a class="btn-add btn btn-primary" onclick="togglePopup()">Tambah</a>                    
-                    </div> -->
+                    
+                    
+
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <a class="btn-add btn btn-primary" onclick="togglePopup()">Tambah</a>                    
-                            </div>
+                        <table class="table table-hover">
+                            <thead class="table-secondary">
+                            
                             <tr class="text-center">
                                 <th class="py-2">No</th>
                                 <th class="py-2">ID Mentor</th>
@@ -153,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <th class="py-2">Aksi</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="table-group-divider">
                             <?php
                             while ($row = $data->fetch_assoc()) {
                             ?>
@@ -166,8 +165,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="text-center"><?php echo $row['tgl_lahir']; ?></td>
                                     <td class="text-center"><?php echo $row['alamat']; ?></td>
                                     <td class="btn-aksi td-no text-center">
-                                        <a class="btn-edit" onclick="showEditPopup(<?php echo $row['id_mentor']; ?>)">Edit</a>
-                                        <a class="btn-hapus" onclick="showDelPopup(<?php echo $row['id_mentor']; ?>)">Del</a>
+                                        <a class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_mentor']; ?>)">Delete</a>
+                                        <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_mentor']; ?>)">Edit</a>
+
                                     </td>
                                     
                                 </tr>

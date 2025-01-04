@@ -121,10 +121,6 @@ class Controller extends koneksi
     }
 
 
-
-
-
-
     public function JumlahSiswa()
     {
         $sql_ViewSiswa = 'SELECT * FROM table_siswa';
