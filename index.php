@@ -3,10 +3,17 @@
 session_start();
 
 // Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true) {
     header("location: ./OOP/login.php");
     exit;
 }
+
+if($_SESSION["role"]!=="admin"){
+    header("location: ./OOP/login.php");
+    exit;
+}
+
+
 
 require_once './OOP/koneksi.php';
 require_once './OOP/controller.php';

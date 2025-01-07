@@ -20,12 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $objekController->login($username, $pass); // Panggil fungsi login()
 
     if ($user !== null) {
-        session_start();
+        // session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $user['username'];
-
-        header("location: ../indexmentor.php");
+        $_SESSION['role'] = $user['role'];
+        if($_SESSION['role']=="mentor"){
+            header("location: ../indexmentor.php");
+            exit;
+        }else{
+            echo "<script>
+                alert('Anda tidak memiliki akses sebagai mentor!');
+                window.location.href = './logout.php'; // Arahkan kembali ke halaman login
+            </script>";
         exit;
+
+        }
     } else {
         $error = "*username atau password salah";
     }

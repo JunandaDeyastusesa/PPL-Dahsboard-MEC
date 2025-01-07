@@ -16,16 +16,24 @@ $objekController = new Controller(); // Ubah "controller()" menjadi "Controller(
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $pass = $_POST['pass'];
-
+    
     $user = $objekController->login($username, $pass); // Panggil fungsi login()
 
-    if ($user !== null) {
-        session_start();
+    if ($user !== null ) {
+        // session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $user['username'];
-
-        header("location: ../index.php");
-        exit;
+        $_SESSION['role'] = $user['role'];
+        if($_SESSION['role']=="admin"){
+            header("location: ../index.php");
+            exit;
+        }else{
+            echo "<script>
+                alert('Anda tidak memiliki akses sebagai admin!');
+                window.location.href = './logout.php'; // Arahkan kembali ke halaman login
+            </script>";
+        }
+        
     } else {
         $error = "*username atau password salah";
     }

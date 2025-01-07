@@ -12,13 +12,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ./OOP/login.php");
     exit;
 }
-$data = $obj->ViewAbsen();
+$data = $obj->ViewAbsen($_GET['id_siswa']);
+
 
 $no = 1;
-
-
-
-
 
 // Proses login saat formulir dikirim
 // $objekController = new Controller(); // Ubah "controller()" menjadi "Controller()"

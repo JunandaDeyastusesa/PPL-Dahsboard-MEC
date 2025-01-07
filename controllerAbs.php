@@ -47,11 +47,12 @@ class Controller extends koneksi
         return false;
     }
 }
-    public function ViewAbsen(){
+    public function ViewAbsen($id){
         $member = "SELECT * 
-           FROM absensi 
+           FROM absensi
            JOIN table_siswa 
-           ON absensi.id_siswa = table_siswa.id_siswa";
+           ON absensi.id_siswa = table_siswa.id_siswa 
+           WHERE absensi.id_siswa = $id";
         $perintah = $this->query($member);
         if (!$perintah) {
             die("Error : " . $this->koneksi->error);
