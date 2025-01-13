@@ -60,6 +60,11 @@ $no = 1;
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link " href="./indexAbsenAdmin.php">
+                                <img src="./assets/ikon/list-check.svg" alt="">Absensi
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="./OOP/pembayaran/index.php">
                                 <img src="./assets/ikon/payment.svg" alt="">Pembayaran
                             </a>

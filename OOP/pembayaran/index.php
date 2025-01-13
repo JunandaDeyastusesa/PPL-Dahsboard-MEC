@@ -69,6 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="../../index.php">
+                                    <img src="../../assets/ikon/list-check.svg" alt="">Absensi
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link active" href="../pembayaran/index.php">
                                     <img src="../../assets/ikon/payment.svg" alt="">Pembayaran
                                 </a>

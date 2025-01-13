@@ -13,6 +13,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 $data = $obj->ViewAbsen($_GET['id_siswa']);
+$kelas = $obj->ViewKelas();
 
 
 $no = 1;
@@ -75,6 +76,7 @@ $no = 1;
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Nama Siswa </th>
+                                    <th class="text-center">Nama kelas </th>
                                     <th class="text-center">Tanggal</th>
                                     <th class="text-center">Status Absen</th>
                                 </tr>
@@ -90,6 +92,9 @@ $no = 1;
                                         </td>
                                         <td class="text-center">
                                             <?php echo $row['nama']; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $row['nama_kelas']; ?>
                                         </td>
                                         <td class="text-center">
                                             <?php echo $row['tanggal']; ?>

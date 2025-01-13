@@ -57,6 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </a>
                         </li>
                         <li class="nav-item">
+                                <a class="nav-link" href="../../index.php">
+                                    <img src="../../assets/ikon/list-check.svg" alt="">Absensi
+                                </a>
+                            </li>
+                        
+                        <li class="nav-item">
                             <a class="nav-link" href="../pembayaran/index.php">
                                 <img src="../../assets/ikon/payment.svg" alt="">Pembayaran
                             </a>
@@ -131,8 +137,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td><?php echo 'Rp. ' . number_format($row['harga'], 0, ',', '.'); ?></td>
                                     <td class="text-center">
                                         <!-- <button class="btn btn-sm btn-outline-warning me-2" onclick="showEditPopup(<?php echo $row['id_kelas']; ?>)">Edit</button> -->
-                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_kelas']; ?>)">Hapus</button>
                                         <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_kelas']; ?>)">Edit</a>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_kelas']; ?>)">Hapus</button>
                                     </td>
                                 </tr>
                             <?php $no += 1;

@@ -62,6 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="../../index.php">
+                                    <img src="../../assets/ikon/list-check.svg" alt="">Absensi
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="../pembayaran/index.php">
                                     <img src="../../assets/ikon/payment.svg" alt="">Pembayaran
                                 </a>
@@ -165,8 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="text-center"><?php echo $row['tgl_lahir']; ?></td>
                                     <td class="text-center"><?php echo $row['alamat']; ?></td>
                                     <td class="btn-aksi td-no text-center">
-                                        <a class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_mentor']; ?>)">Delete</a>
                                         <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_mentor']; ?>)">Edit</a>
+
+                                    <a class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_mentor']; ?>)">Delete</a>
 
                                     </td>
                                     

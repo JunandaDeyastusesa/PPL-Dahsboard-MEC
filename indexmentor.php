@@ -51,8 +51,6 @@ $data = $obj->ViewSiswa();
                             </a>
                         </li>
 
-                       
-
                         <li class="nav-item" stye="cursonr:pointer">
                             <a class="nav-link log-out-btn">
                                 <img src="./assets/ikon/logout.svg" alt="">Logout

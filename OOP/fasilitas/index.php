@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Data Kelas</title>
+    <title>Data Fasilitas</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/style.css">
@@ -53,6 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <img src="../../assets/ikon/Dashboard.svg" alt="">Dashboard
                             </a>
                         </li>
+                        <li class="nav-item">
+                                <a class="nav-link" href="../../index.php">
+                                    <img src="../../assets/ikon/list-check.svg" alt="">Absensi
+                                </a>
+                            </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pembayaran/index.php">
                                 <img src="../../assets/ikon/payment.svg" alt="">Pembayaran
@@ -95,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Main Content -->
             <main class="content col-md-10 ms-sm-auto col-lg-10 px-md-4">
                 <div class="title-page d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3">
-                    <h1>Data Kelas</h1>
+                    <h1>Data Fasilitas</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKelasModal">
                             Tambah
@@ -127,8 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="text-center"><?php echo $row['jumlah']; ?></td>
                                     <td><?php echo $row['status_fasilitas']; ?></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_fasilitas']; ?>)">Hapus</button>
-                                        <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_fasilitas']; ?>)">Edit</a>
+                                    <a class="btn btn-sm btn-outline-warning" onclick="showEditPopup(<?php echo $row['id_fasilitas']; ?>)">Edit</a>
+
+                                    <button class="btn btn-sm btn-outline-danger" onclick="showDelPopup(<?php echo $row['id_fasilitas']; ?>)">Hapus</button>
                                     </td>
                                 </tr>
                             <?php $no += 1;

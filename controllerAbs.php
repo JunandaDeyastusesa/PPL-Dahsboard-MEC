@@ -22,15 +22,15 @@ class Controller extends koneksi
         return $perintah_data;
     }
 
-    public function Add($id_siswa, $tanggal, $status)
+    public function Add($id_siswa, $id_kelas, $tanggal, $status)
 {
     // Query untuk menambahkan data
-    $add_query = "INSERT INTO absensi (id_siswa, tanggal, status) VALUES (?, ?, ?)";
+    $add_query = "INSERT INTO absensi (id_siswa,id_kelas, tanggal, status) VALUES (?, ?, ?,?)";
     $add_statement = $this->prepare($add_query); // Pastikan $this->db adalah koneksi database
 
     if ($add_statement) {
         // Bind parameter
-        $add_statement->bind_param("sss", $id_siswa, $tanggal, $status);
+        $add_statement->bind_param("ssss", $id_siswa,$id_kelas, $tanggal, $status);
 
         // Eksekusi query
         if ($add_statement->execute()) {
@@ -52,6 +52,8 @@ class Controller extends koneksi
            FROM absensi
            JOIN table_siswa 
            ON absensi.id_siswa = table_siswa.id_siswa 
+           JOIN table_paket_kls
+           ON absensi.id_kelas = table_paket_kls.id_kelas
            WHERE absensi.id_siswa = $id";
         $perintah = $this->query($member);
         if (!$perintah) {
@@ -78,6 +80,26 @@ class Controller extends koneksi
             }
         }
         $statement->close();
+    }
+
+    public function ViewKelas()
+    {
+        $member = 'SELECT * FROM table_paket_kls';
+        $perintah = $this->query($member);
+        if (!$perintah) {
+            die("Error : " . $this->koneksi->error);
+        }
+        return $perintah;
+    }
+
+    public function ViewKelasSeleksi()
+    {
+        $member = 'SELECT * FROM table_paket_kls';
+        $perintah = $this->query($member);
+        if (!$perintah) {
+            die("Error : " . $this->koneksi->error);
+        }
+        return $perintah;
     }
     
     public function ViewAbsenById($data)
